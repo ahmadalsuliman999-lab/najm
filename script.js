@@ -37,8 +37,8 @@ async function fetchSheetData() {
                 price: cells[priceIdx] && cells[priceIdx].v !== null ? cells[priceIdx].v : '',     
                 desc: cells[descIdx] && cells[descIdx].v !== null ? cells[descIdx].v : '',      
                 category: cells[catIdx] && cells[catIdx].v !== null ? cells[catIdx].v : '',  
-                img: `images/${imgValue}.png` 
-            };
+// ⚠️ التعديل: حذف كلمة images/ لأن الصور مرفوعة في الخارج مباشرة
+img: `${imgValue}.png`            };
         });
         
         noResults.style.display = 'none';
