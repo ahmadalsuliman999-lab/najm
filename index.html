@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دكان الحي - الأسعار الفورية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="header-content">
+                <h1>دكان الحي - الأسعار المباشرة</h1>
+                <span class="status-indicator"><span class="dot"></span> متصل بالشيت مباشرة</span>
+            </div>
+        </header>
+
+        <div class="search-section">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن مادة...">
+            </div>
+        </div>
+
+        <nav class="categories-nav">
+            <div class="tabs-container" id="tabsContainer"></div>
+        </nav>
+
+        <main class="content-area">
+            <div class="products-grid" id="productsGrid"></div>
+            <div class="no-results" id="noResults" style="display:none; text-align:center; padding:40px;">
+                <h3>جاري تحميل البيانات من الشيت...</h3>
+            </div>
+        </main>
+    </div>
+
+    <div id="imageModal" class="image-modal" onclick="closeImage()">
+        <span class="close-btn">&times;</span>
+        <img id="enlargedImage" class="modal-content" src="" alt="صورة مكبرة">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

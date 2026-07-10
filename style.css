@@ -1,0 +1,271 @@
+:root {
+    --primary-color: #0284c7;
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Cairo', sans-serif; 
+}
+
+body { 
+    background-color: var(--bg-light); 
+    color: var(--text-main); 
+    direction: rtl; 
+    padding: 10px; 
+}
+
+.app-container { 
+    max-width: 500px; 
+    margin: 0 auto; 
+}
+
+.main-header { 
+    padding: 15px 10px; 
+    border-bottom: 1px solid #e2e8f0; 
+    text-align: center; 
+}
+
+.main-header h1 { 
+    font-size: 1.3rem; 
+    font-weight: 900; 
+}
+
+.status-indicator { 
+    font-size: 0.8rem; 
+    color: #10b981; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 5px; 
+    margin-top: 5px; 
+}
+
+.dot { 
+    width: 8px; 
+    height: 8px; 
+    background-color: #10b981; 
+    border-radius: 50%; 
+    display: inline-block; 
+}
+
+.search-section { 
+    margin: 12px 0; 
+}
+
+.search-input { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #cbd5e1; 
+    border-radius: 10px; 
+    font-size: 0.95rem; 
+    outline: none; 
+}
+
+.categories-nav { 
+    margin-bottom: 15px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+    padding-bottom: 5px; 
+}
+
+.tabs-container { 
+    display: flex; 
+    gap: 8px; 
+}
+
+.tab { 
+    padding: 8px 16px; 
+    border: 1px solid #e2e8f0; 
+    background: white; 
+    border-radius: 20px; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+    font-weight: 600; 
+}
+
+.tab.active { 
+    background: var(--primary-color); 
+    color: white; 
+    border-color: var(--primary-color); 
+}
+
+/* شبكة العرض الثنائية للمواد العادية */
+.products-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+}
+
+/* الكروت البيضاء العادية */
+.product-card { 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    border: 1px solid #e2e8f0; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+}
+
+.product-image-wrapper { 
+    width: 100%; 
+    height: 140px; 
+    background: #f8fafc; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; 
+    position: relative;
+}
+
+.product-image { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+}
+
+.product-details { 
+    padding: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px;
+    flex-grow: 1;
+    justify-content: space-between; 
+}
+
+.product-name { 
+    font-size: 0.95rem; 
+    font-weight: 700; 
+    line-height: 1.3;
+}
+
+/* إخفاء الوصف في الكروت العادية للمحافظة على المساحة */
+.product-desc { 
+    display: none; 
+}
+
+.product-price-tag { 
+    background: #f0f9ff; 
+    color: #0369a1; 
+    font-weight: 800; 
+    text-align: center; 
+    padding: 6px; 
+    border-radius: 6px; 
+    font-size: 0.95rem; 
+}
+
+/* ======================================================= */
+/* 🎫 تصميم التذكرة المبتكر وغير المألوف الخاص بكروت العروض */
+/* ======================================================= */
+.product-card.is-promo {
+    grid-column: span 2; /* تأخذ مساحة الصف كاملاً لتكسر النمط */
+    background: linear-gradient(135deg, #ff416c, #ff4b2b); /* تدرج أحمر ناري ملفت */
+    border: none;
+    color: white; 
+    position: relative;
+    padding: 12px;
+    border-radius: 6px; 
+    box-shadow: 0 10px 20px rgba(255, 75, 43, 0.25);
+}
+
+/* الفتحات الدائرية على الأطراف لتعطي شكل قسيمة الشراء المقصوصة */
+.product-card.is-promo::before,
+.product-card.is-promo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--bg-light); /* تطابق خلفية الموقع لتبدو كقصة حقيقية */
+    border-radius: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+}
+.product-card.is-promo::before { left: -10px; } 
+.product-card.is-promo::after { right: -10px; } 
+
+/* تعديل حاوية الصورة داخل التذكرة */
+.product-card.is-promo .product-image-wrapper {
+    background: rgba(255, 255, 255, 0.2); /* خلفية زجاجية أنيقة للمنتج */
+    border-radius: 8px;
+    height: 180px; 
+}
+
+/* إبراز نصوص التذكرة باللون الأبيض */
+.product-card.is-promo .product-name {
+    color: #ffffff;
+    font-size: 1.25rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* إجبار الوصف على الظهور بداخل التذكرة كخط تقطيع منقط */
+.product-card.is-promo .product-desc {
+    display: block !important;
+    color: #ffe4e6;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-top: 1px dashed rgba(255,255,255,0.35); 
+    padding-top: 8px;
+    margin-top: 6px;
+}
+
+/* تحويل السعر لملصق ذهبي ساطع وصارخ للعين */
+.product-card.is-promo .product-price-tag {
+    background: #fef08a; 
+    color: #9a3412;
+    font-weight: 900;
+    font-size: 1.15rem;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* شارة التذكرة العلوية */
+.product-card.is-promo .promo-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ffffff;
+    color: #ff4b2b;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+/* ======================================================= */
+/* شاشة تكبير الصورة الكاملة (Modal) */
+/* ======================================================= */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center; justify-content: center;
+    cursor: pointer;
+}
+
+.modal-content {
+    max-width: 90%; max-height: 85%;
+    border-radius: 12px; object-fit: contain;
+    animation: zoomIn 0.25s ease;
+}
+
+.close-btn {
+    position: absolute; top: 20px; right: 30px;
+    color: #fff; font-size: 40px; font-weight: bold;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
