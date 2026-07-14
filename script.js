@@ -73,7 +73,8 @@ async function fetchSheetData() {
                 price: cells[priceIdx] && cells[priceIdx].v !== null ? cells[priceIdx].v : '',     
                 desc: cells[descIdx] && cells[descIdx].v !== null ? cells[descIdx].v : '',      
                 category: cells[catIdx] && cells[catIdx].v !== null ? cells[catIdx].v : '',  
-                img: `images/${imgValue}.png` 
+                // 🎯 تعديل: قراءة مسار الصورة من الجذر مباشرة (بدون مجلد images)
+                img: `${imgValue}.png` 
             };
         });
         
@@ -112,7 +113,7 @@ function filterAndRender(filterText = '') {
             card.innerHTML = `
                 <div class="product-image-wrapper" onclick="openImage('${product.img}')" style="cursor: pointer;">
                     ${isPromo ? '<span class="promo-badge">🔥 عرض خاص لفترة محدودة</span>' : ''}
-                    <img src="${product.img}" onerror="this.src='images/default.png'" alt="${product.name}" class="product-image" loading="lazy">
+                    <img src="${product.img}" onerror="this.src='default.png'" alt="${product.name}" class="product-image" loading="lazy">
                 </div>
                 <div class="product-details">
                     <div class="product-info-top">
@@ -149,24 +150,23 @@ function renderTabs() {
     });
 }
 
-// ⚠️ كود البحث الذكي المطور لإرسال كلمات البحث، الاسم، ونوع الجهاز إلى جوجل شيت
+// ⚠️ إرسال كلمات البحث، اسم المستخدم المسجل، ونوع جهازه لجوجل شيت تلقائياً
 searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim();
-    filterAndRender(query); // الفلترة الفورية للمنتجات أمام المستخدم
+    filterAndRender(query); // فلترة فورية أمام العميل
 
-    // إلغاء المؤقت السابق عند استمرار المستخدم بالكتابة
+    // إلغاء المؤقت السابق عند استمرار الكتابة لمنع التكرار
     clearTimeout(searchTimeout);
 
-    // نتحقق من أن المستخدم كتب كلمة من حرفين أو أكثر
     if (query.length >= 2) {
-        // الانتظار لمدة ثانيتين بعد توقف المستخدم عن الضغط لتسجيل الكلمة كاملة
+        // الانتظار لمدة ثانيتين بعد التوقف عن الكتابة للإرسال دفعة واحدة
         searchTimeout = setTimeout(() => {
             const userAgentInfo = navigator.userAgent;
             const currentName = localStorage.getItem('shop_username') || "زائر مجهول";
 
             fetch(appsScriptUrl, {
                 method: 'POST',
-                mode: 'no-cors', // لتجنب مشاكل الـ CORS في المتصفحات
+                mode: 'no-cors', // لتجاوز قيود الـ CORS بالمتصفحات
                 headers: {
                     'Content-Type': 'application/json',
                 },
