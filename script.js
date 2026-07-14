@@ -1,6 +1,7 @@
 const sheetUrl = "https://docs.google.com/spreadsheets/d/1sn1BGB0WKWlM8hDnzPuB4CNV1RwV4NlBowYtoEG53Ws/gviz/tq?tqx=out:json";
+// ⚠️ ضع هنا رابط الـ Web App الذي حصلت عليه بعد عمل Deploy للـ Apps Script في جوجل شيت
+const appsScriptUrl = "https://script.google.com/macros/s/AKfycbwWN9zs2cYovMue5rn2U0KShPxXS4unHyu4XNC3tbHw-Xl4ZXtuonixuvKp_CwDoorA/exec"; 
 
-// تم إضافة "عرض" للقوائم لتصفية العروض بشكل مستقل إذا أراد المستخدم
 const mainCategories = ["الكل", "عرض", "دخان", "مواد غذائية", "مشروبات", "منظفات"];
 let currentCategory = "الكل";
 let productsList = [];
@@ -9,6 +10,9 @@ const tabsContainer = document.getElementById('tabsContainer');
 const productsGrid = document.getElementById('productsGrid');
 const searchInput = document.getElementById('searchInput');
 const noResults = document.getElementById('noResults');
+
+// مؤقت ذكي لمنع تكرار الإرسال أثناء الكتابة المستمرة
+let searchTimeout;
 
 async function fetchSheetData() {
     try {
@@ -49,13 +53,11 @@ async function fetchSheetData() {
     }
 }
 
-// دالة لفتح نافذة تكبير الصورة عند النقر
 function openImage(src) {
     document.getElementById('enlargedImage').src = src;
     document.getElementById('imageModal').style.display = 'flex';
 }
 
-// دالة لإغلاق النافذة عند الضغط في أي مكان
 function closeImage() {
     document.getElementById('imageModal').style.display = 'none';
 }
@@ -72,20 +74,18 @@ function filterAndRender(filterText = '') {
             hasProducts = true;
             const card = document.createElement('div');
             
-            // ⚠️ الفحص الذكي: إذا كان القسم مكتوباً في الشيت كلمة "عرض"، يعطيه كلاس إضافي is-promo ليصبح عريضاً ومتوهجاً
             const isPromo = product.category === "عرض";
             card.className = isPromo ? 'product-card is-promo' : 'product-card';
             
             card.innerHTML = `
                 <div class="product-image-wrapper" onclick="openImage('${product.img}')" style="cursor: pointer;">
-                    <!-- إضافة شارة العرض المتحركة فوق الصورة فقط إذا كان منتجاً ترويجياً -->
                     ${isPromo ? '<span class="promo-badge">🔥 عرض خاص لفترة محدودة</span>' : ''}
                     <img src="${product.img}" onerror="this.src='images/default.png'" alt="${product.name}" class="product-image" loading="lazy">
                 </div>
                 <div class="product-details">
                     <div class="product-info-top">
                         <h3 class="product-name">${product.name}</h3>
-                        <p class="product-desc">${product.desc || ''}</p>
+                        <p class="${isPromo ? 'promo-desc' : 'product-desc'}">${product.desc || ''}</p>
                     </div>
                     <div class="product-price-tag">${product.price}</div>
                 </div>
@@ -117,9 +117,31 @@ function renderTabs() {
     });
 }
 
+// ⚠️ كود البحث الذكي المطور لإرسال كلمات البحث إلى جوجل شيت
 searchInput.addEventListener('input', (e) => {
-    filterAndRender(e.target.value);
+    const query = e.target.value.trim();
+    filterAndRender(query); // الفلترة الفورية للمنتجات أمام المستخدم
+
+    // إلغاء المؤقت السابق عند استمرار المستخدم بالكتابة
+    clearTimeout(searchTimeout);
+
+    // نتحقق من أن المستخدم كتب كلمة من حرفين أو أكثر
+    if (query.length >= 2) {
+        // الانتظار لمدة ثانيتين بعد توقف المستخدم عن الضغط لتسجيل الكلمة كاملة
+        searchTimeout = setTimeout(() => {
+            fetch(appsScriptUrl, {
+                method: 'POST',
+                mode: 'no-cors', // لتجنب مشاكل الـ CORS في المتصفحات
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ search_term: query })
+            })
+            .then(() => console.log("تم تسجيل البحث بنجاح:", query))
+            .catch(err => console.error("فشل إرسال الكلمة:", err));
+        }, 2000);
+    }
 });
 
 renderTabs();
-fetchSheetData();0
+fetchSheetData();
