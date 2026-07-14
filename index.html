@@ -10,7 +10,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
+
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h2>أهلاً بك في دكان الحي 👋</h2>
+            <p>يرجى كتابة اسمك الكريم لتتمكن من تصفح الأسعار الفورية والمواد المتوفرة:</p>
+            <input type="text" id="usernameInput" class="search-input" placeholder="اكتب اسمك هنا...">
+            <button id="enterStoreBtn" class="enter-btn">دخول المتجر</button>
+        </div>
+    </div>
+
+    <div id="mainAppContainer" class="app-container" style="display: none;">
         <header class="main-header">
             <div class="header-content">
                 <h1>دكان الحي - الأسعار المباشرة</h1>
